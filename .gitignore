@@ -1,0 +1,9 @@
+# Directories
+dist/
+
+# System Files
+.DS_Store
+Thumbs.db
+
+# Ignore files
+*.txt
