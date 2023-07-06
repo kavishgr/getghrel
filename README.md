@@ -1,7 +1,6 @@
 # getghrel
 
-getghrel" is a command-line interface (CLI) tool that locates and downloads the most recent release assets from Github for MacOS and Linux architectures, specifically "amd64" and "arm64". However, currently, it only supports "amd64" architecture for Linux. The tool automatically identifies your operating system and architecture, and downloads the binary. If the release is compressed or in an archive format, it will automatically extract and unpack it, no matter how it's compressed, and keep only the binary.
-
+getghrel" is a command-line interface (CLI) tool that locates and downloads the most recent release assets from Github for MacOS and Linux architectures, specifically "amd64" and "arm64". The tool automatically identifies your operating system and architecture, and downloads the binary. If the release is compressed or in an archive format, it will automatically extract and unpack it, no matter how it's compressed, and keep only the binary.
 
 ## Installation
 
@@ -9,7 +8,7 @@ Download the latest binary from the [releases](https://test) section and place i
 
 ### Dependencies
 
-- A GitHub token. By default, the tool will search for the `GITHUB_TOKEN` environment variable. Alternatively, you can also provide it directly through the command line.
+- A GitHub token. By default, the tool will search for the `GITHUB_TOKEN` environment variable. Alternatively, you can also provide it directly on the command line.
 
 ## Usage
 
@@ -40,7 +39,7 @@ All the supported flags:
 
 ### List Found Releases
 
-To list the found releases, create a text file with a complete URL or owner/repo per line, and run:
+To list the found releases, create a text file with a **complete URL** or **owner/repo** per line, and run:
 
 ```sh
 # List of URLs
@@ -50,6 +49,8 @@ cat testurls.txt | getghrel -list -con 3 | sort | tee releases.txt
 # Single one
 echo "sharkdp/bat" | getghrel -list | sort
 ```
+
+### Demo
 
 ```sh
 ❯ cat urls.txt | getghrel -list | sort                                                          
@@ -80,30 +81,34 @@ In case a repository lacks a latest release tag, the tool will search for the mo
 
 ### Download Found Assets
 
-To download the found assets and keep the binaries in a temporary folder (which is /tmp/getghrel by default), simply use the '-download' flag:
+To download the found assets and keep the binaries in a temporary folder (which is `/tmp/getghrel` by default), simply use the '-download' flag:
 
 ```sh
-# List of URLS
+# List of URLS found with -list
 cat releases.txt | getghrel -download
 cat releases.txt | getghrel -download -con 3
 
 # Single one
-echo "https://github.com/sharkdp/bat" | getghrel -download
+echo "https://github.com/sharkdp/bat" | getghrel -list | getghrel -download
 ```
 
-Download to a different location for the temporary folder, use the `-tempdir` flag:
+### Demo
+
+something here........
+
+To download to a different location, use the `-tempdir` flag :
 
 ```sh
 # List of URLS
 cat releases.txt | getghrel -download -tempdir '/tmp/tempbin'
 
 # Single one
-echo "https://github.com/sharkdp/bat" | getghrel -download -tempdir '/tmp/tempbin'
+echo "https://github.com/sharkdp/bat" | getghrel -list | getghrel -download -tempdir '/tmp/tempbin'
 ```
 
 ## TODO
 
-Add a boolean flag to control the search for recent release tags. With this flag, you can choose to download the most recent nightly or unstable releases, or skip them altogether. The flag also ensures that unstable releases are excluded from the search for recent releases.
+Add a flag to control the search for recent release tags. With this flag, you can choose to download the most recent nightly/unstable releases or one below them, or skip them altogether. 
 
 ## Contributing
 
