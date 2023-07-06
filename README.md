@@ -4,7 +4,7 @@ getghrel" is a command-line interface (CLI) tool that locates and downloads the 
 
 ## Installation
 
-Download the latest binary from the [releases](https://test) section and place it in your `$PATH`. 
+Download the latest binary from the [releases](https://github.com/kavishgr/getghrel/releases/tag/v0.1.0) section and place it in your `$PATH`. 
 
 ### Dependencies
 
