@@ -52,7 +52,7 @@ echo "sharkdp/bat" | getghrel -list | sort
 
 #### Demo Screenshot
 
-[HERE]()
+![-list](./examples/list)
 
 
 This will display a list of URLs representing the latest release assets found for each repository, along with any other relevant files (such as checksums and SBOMs) specific to your operating system and architecture. 
@@ -80,7 +80,7 @@ echo "https://github.com/sharkdp/bat" | getghrel -list | getghrel -download
 
 #### Demo Screenshot
 
-[HERE]()
+![-download](./examples/download)
 
 
 As you can see, the bottom package had two releases for weird reasons, and the tool only kept a single.
