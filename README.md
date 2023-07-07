@@ -80,7 +80,7 @@ echo "https://github.com/sharkdp/bat" | getghrel -list | getghrel -download
 
 #### Demo Screenshot
 
-![-download](/examples/download)
+![-download](examples/download.jpg)
 
 
 As you can see, the bottom package had two releases for weird reasons, and the tool only kept a single.
