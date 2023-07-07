@@ -192,7 +192,7 @@ func getTagByName(ghtoken, ownerNrepo string) []byte {
 
 	tagUrl := fmt.Sprintf("https://api.github.com/repos%s/releases/tags/%s", ownerNrepo, tagname)
 	// fmt.Println(tagUrl)
-	fmt.Println("TAGURL:", tagUrl)
+	// fmt.Println("TAGURL:", tagUrl)
 
 
 	req := craftGithubReq(ghtoken, tagUrl)
