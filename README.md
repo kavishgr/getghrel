@@ -52,7 +52,7 @@ echo "sharkdp/bat" | getghrel -list | sort
 
 #### Demo Screenshot
 
-![-list](/examples/list)
+![-list](examples/list.jpg)
 
 
 This will display a list of URLs representing the latest release assets found for each repository, along with any other relevant files (such as checksums and SBOMs) specific to your operating system and architecture. 
