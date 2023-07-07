@@ -78,7 +78,7 @@ cat releases.txt | getghrel -download -con 3
 echo "https://github.com/sharkdp/bat" | getghrel -list | getghrel -download
 ```
 
-### Demo Screenshot
+#### Demo Screenshot
 
 [HERE]()
 
@@ -98,7 +98,7 @@ echo "https://github.com/sharkdp/bat" | getghrel -list | getghrel -download -tem
 
 ## TODO
 
-Add a flag to control the search for recent release tags. With this flag, you can choose to download the most recent nightly/unstable releases or one below them, or skip them altogether. 
+Add a flag to control the search for recent release tags. With this flag, you can to include the most recent nightly/unstable releases or one below them in `-list`, or skip them altogether. 
 
 ## Contributing
 
