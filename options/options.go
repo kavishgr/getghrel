@@ -10,6 +10,7 @@ import (
 type options struct {
     List       bool
     Download    bool
+    NoExtract bool
     Concurrency int
     GHToken     string
     TempDir     string
@@ -75,6 +76,7 @@ flag.Usage = func() {
     opts := options{}
     flag.BoolVar(&opts.Download, "download", false, "")
     flag.BoolVar(&opts.List, "list", false, "")
+    flag.BoolVar(&opts.NoExtract, "noextract", false, "")
     flag.IntVar(&opts.Concurrency, "con", 2, "")
     default_ghtoken := os.Getenv("GITHUB_TOKEN")
     flag.StringVar(&opts.GHToken, "ghtoken", default_ghtoken, "")

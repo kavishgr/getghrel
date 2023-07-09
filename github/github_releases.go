@@ -87,7 +87,7 @@ func craftGithubReq(ghtoken, url string) *http.Request {
    - then find exectutable/binary and move it ../ to tempdir
 */
 
-func DownloadRelease(urlsChan chan string, job *sync.WaitGroup, ghtoken, tempdir string) {
+func DownloadRelease(urlsChan chan string, job *sync.WaitGroup, ghtoken, tempdir string, noextract bool) {
 
 	defer job.Done()
 
@@ -116,6 +116,14 @@ func DownloadRelease(urlsChan chan string, job *sync.WaitGroup, ghtoken, tempdir
 		)
 
 		io.Copy(io.MultiWriter(f, bar), resp.Body)
+
+		//TODEL
+
+		if noextract {
+			return
+		}
+
+		//TODEL
 
 		utils.Extractor(src, tempdir)
 	}
@@ -210,7 +218,7 @@ func getTagByName(ghtoken, ownerNrepo string) []byte {
 }
 
 func isMapEmpty(m map[string]int) bool {
-	return len(m) == 0
+	return len(m) == 0 // returns true if map is empty
 }
 
 /* - fetch the asset urls from latest release for each url or username/repo (used by -list)
@@ -272,7 +280,8 @@ func FetchGithubReleaseUrl(urlsChan chan string, job *sync.WaitGroup, regex, ght
 
 			if isMatch == true {
 				github_release[asset_url] = 1
-			}
+			} 
+
 			return true // keep iterating in case there are multiple urls that match
 		})
 

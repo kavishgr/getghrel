@@ -44,7 +44,7 @@ To list the found releases, create a text file with a **complete URL** or **owne
 ```sh
 # List of URLs
 # e.g 
-cat testurls.txt | getghrel -list -con 3 | sort | tee releases.txt
+cat urls.txt | getghrel -list -con 3 | tee releases.txt
 
 # Single one
 echo "sharkdp/bat" | getghrel -list | sort
@@ -95,6 +95,15 @@ cat releases.txt | getghrel -download -tempdir '/tmp/tempbin'
 # Single one
 echo "https://github.com/sharkdp/bat" | getghrel -list | getghrel -download -tempdir '/tmp/tempbin'
 ```
+
+### Skip Extraction
+
+.....
+
+
+#### Demo Screenshot
+
+![-noextract](examples/noextract.jpg)
 
 ## TODO
 

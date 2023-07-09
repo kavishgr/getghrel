@@ -5,26 +5,26 @@ import(
 )
 
 func CompileRegex(ost, arch string) string{
-	var myregex string
+	var regex string
 
 	switch {
 	case (ost == "darwin" && arch == "amd64"):
 		// perl syntax
 		// works with github.com/dlclark/regexp2
-		myregex = `(?i)(?=.*(?:apple|darwin|macos|mac))(?=.*(?:amd64|x86_64))(?!.*(?:freebsd|netbsd|openbsd|linux|windows))(?:.*(?:apple|darwin|macos|mac).*?(?:amd64|x86_64)|(?:amd64|x86_64).*?(?:apple|darwin|macos|mac))(?:[^a-z]|$)`
-		// myregex = `.*(?i)(apple|darwin|macos|mac).*?(amd64|x86_64)|(amd64|x86_64).*?(?i)(apple|darwin|macos|mac)`
+		//good
+		regex = `(?i)(?=.*(?:apple|darwin|macos|mac))(?=.*(?:amd64|x86_64))(?!.*(?:freebsd|netbsd|openbsd|linux|windows))(?:.*(?:apple|darwin|macos|mac).*?(?:amd64|x86_64)|(?:amd64|x86_64).*?(?:apple|darwin|macos|mac))(?:[^a-z]|$)`
+		//rescue = os only
 
 	case (ost == "darwin" && arch == "arm64"):
-		// myregex = `.*(?i)(apple|darwin|macos|mac).*?(arm64|aarch64)|(arm64|aarch64).*?(?i)(apple|darwin|macos|mac)`
-		myregex = `(?i)(?=.*(?:apple|darwin|macos|mac))(?=.*(?:arm64|aarch64))(?!.*(?:freebsd|netbsd|openbsd|linux|windows))(?:.*(?:apple|darwin|macos|mac).*?(?:arm64|aarch64)|(?:arm64|aarch64).*?(?:apple|darwin|macos|mac))(?:[^a-z]|$)`
+		regex = `(?i)(?=.*(?:apple|darwin|macos|mac))(?=.*(?:arm64|aarch64))(?!.*(?:freebsd|netbsd|openbsd|linux|windows))(?:.*(?:apple|darwin|macos|mac).*?(?:arm64|aarch64)|(?:arm64|aarch64).*?(?:apple|darwin|macos|mac))(?:[^a-z]|$)`
 	
 	case (ost == "linux" && arch == "amd64"):
-		// myregex = `.*(?i)(linux|unknown).*?(amd64|x86_64)|(amd64|x86_64).*?(?i)(linux|unknown)`
-		myregex = `(?i)(?=.*(?:linux))(?=.*(?:amd64|x86_64))(?!.*(?:freebsd|netbsd|openbsd|windows|apple|darwin|macos|mac))(?:.*(?:linux).*?(?:amd64|x86_64)|(?:amd64|x86_64).*?(?:linux))(?:[^a-z]|$)`
+		//good
+		regex = `(?i)(?=.*(?:linux))(?=.*(?:amd64|x86_64))(?!.*(?:freebsd|netbsd|openbsd|windows|apple|darwin|macos|mac))(?:.*(?:linux).*?(?:amd64|x86_64)|(?:amd64|x86_64).*?(?:linux))(?:[^a-z]|$)`
 
+	
 	case (ost == "linux" && arch == "aarch64"):
-	// 	// myregex = `.*(?i)(linux|unknown).*?(amd64|x86_64)|(amd64|x86_64).*?(?i)(linux|unknown)`
-		myregex = `(?i)(?=.*(?:linux))(?=.*(?:arm64|aarch64))(?!.*(?:freebsd|netbsd|openbsd|windows|apple|darwin|macos|mac))(?:.*(?:linux).*?(?:arm64|aarch64)|(?:arm64|aarch64).*?(?:linux))(?:[^a-z]|$)`
+		regex = `(?i)(?=.*(?:linux))(?=.*(?:arm64|aarch64))(?!.*(?:freebsd|netbsd|openbsd|windows|apple|darwin|macos|mac))(?:.*(?:linux).*?(?:arm64|aarch64)|(?:arm64|aarch64).*?(?:linux))(?:[^a-z]|$)`
 	
 	default:
 		msg1 := "OS or Architecture is not supported or not found in the regex pattern"
@@ -33,5 +33,5 @@ func CompileRegex(ost, arch string) string{
 		msg4 := "and Linux for the following arch: x86_64/amd64"
 		log.Fatalf("%v\n%v\n%v\n%v", msg1, msg2, msg3, msg4)
 }
-	return myregex
+	return regex
 }

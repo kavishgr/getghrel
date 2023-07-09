@@ -13,6 +13,7 @@ func main() {
 
 	var (
 		opts      = options.ParseFlags()
+		noextract = opts.NoExtract
 		token     = opts.GHToken
 		tempdir   = opts.TempDir
 		ost, arch = utils.OsInfo()                
@@ -51,7 +52,7 @@ func main() {
 
 		for c := 0; c < opts.Concurrency; c++ {
 			jobs.Add(1)
-			go github.DownloadRelease(stdInUrls, &jobs, token, tempdir)
+			go github.DownloadRelease(stdInUrls, &jobs, token, tempdir, noextract)
 		}
 	}
 
@@ -60,6 +61,9 @@ func main() {
 	switch {
 	case opts.List:
 		return
+
+	case noextract:
+		fmt.Println("Archives are inside: ", tempdir)
 
 	default:
 		cleanup(tempdir)
