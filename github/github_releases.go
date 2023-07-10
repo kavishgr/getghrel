@@ -117,13 +117,9 @@ func DownloadRelease(urlsChan chan string, job *sync.WaitGroup, ghtoken, tempdir
 
 		io.Copy(io.MultiWriter(f, bar), resp.Body)
 
-		//TODEL
-
 		if noextract {
 			return
 		}
-
-		//TODEL
 
 		utils.Extractor(src, tempdir)
 	}

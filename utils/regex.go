@@ -4,7 +4,7 @@ import(
 	"log"
 )
 
-func CompileRegex(ost, arch string) string{
+func SetRegex(ost, arch string) string{
 	var regex string
 
 	switch {

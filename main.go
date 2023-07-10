@@ -17,7 +17,7 @@ func main() {
 		token     = opts.GHToken
 		tempdir   = opts.TempDir
 		ost, arch = utils.OsInfo()                
-		regex     = utils.CompileRegex(ost, arch) 
+		regex     = utils.SetRegex(ost, arch) 
 		stdInUrls = make(chan string)             
 		jobs      sync.WaitGroup
 	)
