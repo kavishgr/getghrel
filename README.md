@@ -55,11 +55,13 @@ echo "sharkdp/bat" | getghrel -list | sort
 ![-list](examples/list.jpg)
 
 
-This will display a list of URLs representing the latest release assets found for each repository, along with any other relevant files (such as checksums and SBOMs) specific to your operating system and architecture. 
+This will display a list of URLs representing the latest release assets found for each repository.
 
-You can filter the output to remove the checksums and SBOM files before passing it to the `-download` flag to ensure a clean download in the output. However, even if you don't filter the output, the tool will automatically retain only the binaries and remove all unnecessary files. Just filter them out to save some bandwidth. 
+In rare cases, you may come across additional files like checksums and SBOMs that are specific to your operating system and architecture. I have taken care to exclude them in the regular expression. However, if any such files exist, you can simply filter them out before using the `-download` flag to ensure a clean download. But don't worry, even if you don't filter the output, the tool will automatically keep only the necessary binaries and remove any unnecessary files. Filtering them out can help save bandwidth.
 
-`N/A` means the repo doesn't have release assets. Some linux releases will have both gnu and musl releases. Filter them out according to your liking. 
+In the case of `N/A`, it means that the repository doesn't have any release assets available. For Linux releases, there might be separate versions for both GNU and Musl. You can choose to filter them out based on your preferences.
+
+> Note: The first line indicates that the package 'neovim' is mentioned. However, it will be listed as `N/A` on macOS because the release does not specify the architecture. There are ways to resolve this issue, but it involves dealing with regular expressions, which can be a bit complex. Nevertheless, you can be confident that every release will be discoverable, except for this particular case. Additionally, the neovim release on GitHub requires multiple dependencies, not just a binary. Personally I use [helix](https://github.com/helix-editor/helix).
 
 Duplicates are unlikely, but if they do occur, you can easily filter them out using tools like `sort` and `uniq`. That should do the trick.
 
@@ -83,8 +85,7 @@ echo "https://github.com/sharkdp/bat" | getghrel -list | getghrel -download
 ![-download](examples/download.jpg)
 
 
-As you can see, the bottom package had two releases for weird reasons, and the tool only kept a single.
-
+In the example above, you can observe that the bottom package had two releases due to different versions of GNU. However, the tool only retained one version. You can filter out these additional releases. I included them here for the purpose of this example.
 
 To download to a different location, use the `-tempdir` flag :
 
@@ -98,16 +99,27 @@ echo "https://github.com/sharkdp/bat" | getghrel -list | getghrel -download -tem
 
 ### Skip Extraction
 
-.....
+To keep the file unarchived or uncompressed, you can simply use the -noextract option:
 
+```sh
+echo "helix-editor/helix" | getghrel -list | getghrel -noextract -download
+```
+
+It is useful for releases that require dependencies bundled together in separate files or folders, rather than just a single binary.
 
 #### Demo Screenshot
 
 ![-noextract](examples/noextract.jpg)
 
+Run `ls` afterwards to show the result.
+
 ## TODO
 
-Add a flag to control the search for recent release tags. With this flag, you can to include the most recent nightly/unstable releases or one below them in `-list`, or skip them altogether. 
+- Add an option to control the search for recent release tags. With this flag, you can choose to include the most recent nightly/unstable releases or one below them with `-list`, or skip them altogether. 
+
+- Add an option to include appimages.
+
+- **Optional**: update the regular expression to include releases that contain only the operating system and not the architecture. Most releases do include the OS and architecture, I'm mentioning it here because of the neovim issue discussed earlier.
 
 ## Contributing
 

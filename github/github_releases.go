@@ -213,7 +213,7 @@ func getTagByName(ghtoken, ownerNrepo string) []byte {
 	return body
 }
 
-func isMapEmpty(m map[string]int) bool {
+func mapIsEmpty(m map[string]int) bool {
 	return len(m) == 0 // returns true if map is empty
 }
 
@@ -224,6 +224,7 @@ func isMapEmpty(m map[string]int) bool {
    - N/A: https://github.com/user/repo
 */
 
+//TODEL rescue
 func FetchGithubReleaseUrl(urlsChan chan string, job *sync.WaitGroup, regex, ghtoken string) {
 
 	defer job.Done()
@@ -276,12 +277,12 @@ func FetchGithubReleaseUrl(urlsChan chan string, job *sync.WaitGroup, regex, ght
 
 			if isMatch == true {
 				github_release[asset_url] = 1
-			} 
+			}
 
 			return true // keep iterating in case there are multiple urls that match
 		})
 
-		if isMapEmpty(github_release) {
+		if mapIsEmpty(github_release) {
 			fmt.Println("N/A:", u)
 		} else {
 			for k, _ := range github_release {
@@ -289,6 +290,7 @@ func FetchGithubReleaseUrl(urlsChan chan string, job *sync.WaitGroup, regex, ght
 				fmt.Println(k)
 			}
 		}
+
 	}
 
 	for u := range urlsChan {
