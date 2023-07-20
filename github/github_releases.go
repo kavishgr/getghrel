@@ -27,6 +27,7 @@ import (
   - got the regex from chatgpt
   - works fine
 */
+
 func isValidURL(url string) bool {
 	urlRegex := regexp.MustCompile(`^(https?|ftp)://[^\s/$.?#].[^\s]*$`)
 	return urlRegex.MatchString(url)
@@ -47,6 +48,7 @@ func isValidURL(url string) bool {
 
   - return the api url
 */
+
 func fixUrl(githubUrl string) (string, string) {
 	apiDomain := "https://api.github.com/repos"
 	apiDomainSuffix := "/releases/latest"
@@ -87,12 +89,12 @@ func craftGithubReq(ghtoken, url string) *http.Request {
    - then find exectutable/binary and move it ../ to tempdir
 */
 
-func DownloadRelease(urlsChan chan string, job *sync.WaitGroup, ghtoken, tempdir string, noextract bool) {
+func DownloadRelease(urlsChan chan string, job *sync.WaitGroup, ghtoken, tempdir string, skipextraction bool) {
 
 	defer job.Done()
 
-	// define a separate function to handle file download and processing
-	// so that defer gets called upon each iteration
+	// anonymous func() to handle file download and processing
+	// so that defer() gets called upon each iteration
 	// instead of waiting for DownloadRelease() to return
 	downloadAndProcessFile := func(u string) {
 		// get the assetname of each url -> e.g bat.tar.gz
@@ -117,7 +119,7 @@ func DownloadRelease(urlsChan chan string, job *sync.WaitGroup, ghtoken, tempdir
 
 		io.Copy(io.MultiWriter(f, bar), resp.Body)
 
-		if noextract {
+		if skipextraction {
 			return
 		}
 
