@@ -25,6 +25,7 @@ func Extractor(src, tempdir string) error {
 		"7z",
 		"xz",
 		"tar",
+		"tbz",
 		"tar.xz",
 		"tar.gz",
 		"gzip",
@@ -68,7 +69,6 @@ func Extractor(src, tempdir string) error {
 				// fmt.Println(stat.Name())
 
 				// create a new file with the same name as the extracted file
-
 				// f.Open() returns an io.ReadCloser
 				content, _ := f.Open()
 				defer content.Close()
