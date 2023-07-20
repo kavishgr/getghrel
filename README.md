@@ -2,13 +2,15 @@
 
 getghrel" is a command-line interface (CLI) tool that locates and downloads the most recent release assets from Github for MacOS and Linux architectures, specifically "amd64" and "arm64". The tool automatically identifies your operating system and architecture, and downloads the binary. If the release is compressed or in an archive format, it will automatically extract and unpack it, no matter how it's compressed, and keep only the binary.
 
+You can also choose to skip the extraction and keep the archive itself if the release is a binary or script that needs dependencies available in the archive.
+
 ## Installation
 
 Download the latest binary from the [releases](https://github.com/kavishgr/getghrel/releases) section and place it in your `$PATH`. 
 
 ### Dependencies
 
-- A GitHub token. By default, the tool will search for the `GITHUB_TOKEN` environment variable. Alternatively, you can also provide one directly on the command line.
+- A GitHub token. By default, the tool will look for the `GITHUB_TOKEN` environment variable. Alternatively, you can also provide one directly on the command line.
 
 ## Usage
 
@@ -28,13 +30,17 @@ All the supported flags:
             Default is the GITHUB_TOKEN environment variable.
             Example: cat urls.txt | getghrel -list -ghtoken 'YOUR TOKEN' | sort
 
--download will download and extract the binary inside tempdir(`/tmp/getghrel`)
+-download will download and extract the binary inside `/tmp/getghrel`
             Example: cat urls_from_list_results.txt | getghrel -download 
+
+-skipextraction skip the extraction process
+	 Example: echo "helix-editor/helix" | getghrel -list | getghrel -download -skipextraction
 
 -tempdir <string> specify a a temporary directory to download/extract the binaries
             Default is `/tmp/getghrel`
             Example: cat urls_from_list_results.txt | getghrel -download -tempdir /tmp/test
 
+-version display version
 ```
 
 ### List Found Releases
@@ -52,16 +58,16 @@ echo "sharkdp/bat" | getghrel -list | sort
 
 #### Demo Screenshot
 
-![-list](examples/list.jpg)
+![-list](examples/list-flag.jpg)
 
 
 This will display a list of URLs representing the latest release assets found for each repository.
 
-In rare cases, you may come across additional files like checksums and SBOMs that are specific to your operating system and architecture. I have taken care to exclude them in the regular expression. However, if any such files exist, you can simply filter them out before using the `-download` flag to ensure a clean download. But don't worry, even if you don't filter the output, the tool will automatically keep only the necessary binaries and remove any unnecessary files. Filtering them out can help save bandwidth.
+In rare cases, you may come across additional files like checksums and SBOMs that are specific to your operating system and architecture. I have taken care to exclude them in the regular expression. However, if any such files exist, you can simply filter them out before using the `-download` flag to ensure a clean download. But don't worry, even if you don't filter the output, the tool will automatically keep only the binaries and remove any unnecessary files. Filtering them out can help save bandwidth.
 
-In the case of `N/A`, it means that the repository doesn't have any release assets available. For Linux releases, there might be separate versions for both GNU and Musl. You can choose to filter them out based on your preferences.
+In the case of `N/A`(not available), it means that the repository doesn't have any release assets available. For Linux releases, there might be separate versions for both Gnu and Musl. You can choose to filter them out based on your preferences.
 
-> Note: The first line indicates that the package 'neovim' is mentioned. However, it will be listed as `N/A` on macOS because the release does not specify the architecture. There are ways to resolve this issue, but it involves dealing with regular expressions, which can be a bit complex. Nevertheless, you can be confident that every release will be discoverable, except for this particular case. Additionally, the neovim release on GitHub requires multiple dependencies, not just a binary. Personally I use [helix](https://github.com/helix-editor/helix).
+> Note: In the example above, the first line shows that the 'neovim' package is unavailable. But neovim does have a latest release. The reason it's not listed is because my regex always checks for assets containing both the OS and architecture, while neovim's assets only specify the OS. There are ways to resolve this issue, but it involves dealing with regex, which can be a bit complex. Nevertheless, you can be confident that every release will be discoverable, except for this particular case.
 
 Duplicates are unlikely, but if they do occur, you can easily filter them out using tools like `sort` and `uniq`. That should do the trick.
 
@@ -82,7 +88,7 @@ echo "https://github.com/sharkdp/bat" | getghrel -list | getghrel -download
 
 #### Demo Screenshot
 
-![-download](examples/download.jpg)
+![-download](examples/download-flag.jpg)
 
 
 In the example above, you can observe that the bottom package had two releases due to different versions of GNU. However, the tool only retained one version. You can filter out these additional releases. I included them here for the purpose of this example.
@@ -99,19 +105,17 @@ echo "https://github.com/sharkdp/bat" | getghrel -list | getghrel -download -tem
 
 ### Skip Extraction
 
-To keep the file unarchived or uncompressed, you can simply use the -noextract option:
+To keep the file unarchived or uncompressed, you can simply use the `-skipextraction` option:
 
 ```sh
-echo "helix-editor/helix" | getghrel -list | getghrel -noextract -download
+echo "helix-editor/helix" | getghrel -list | getghrel -skipextraction -download
 ```
 
 It is useful for releases that require dependencies bundled together in separate files or folders, rather than just a single binary.
 
 #### Demo Screenshot
 
-![-noextract](examples/noextract.jpg)
-
-Run `ls` afterwards to show the result.
+![-skipextraction](examples/skipextraction-flag.jpg)
 
 ## TODO
 
@@ -119,7 +123,7 @@ Run `ls` afterwards to show the result.
 
 - Add an option to include appimages.
 
-- **Optional**: update the regular expression to include releases that contain only the operating system and not the architecture. Most releases do include the OS and architecture, I'm mentioning it here because of the neovim issue discussed earlier.
+- **Optional**: update the regular expression to include releases that contain only the operating system and not the architecture. Most releases do include both the OS and architecture, I'm mentioning it here because of the neovim issue discussed earlier.
 
 ## Contributing
 
