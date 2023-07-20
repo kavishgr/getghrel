@@ -13,7 +13,7 @@ func main() {
 
 	var (
 		opts      = options.ParseFlags()
-		noextract = opts.NoExtract
+		skipextraction = opts.SkipExtraction
 		token     = opts.GHToken
 		tempdir   = opts.TempDir
 		ost, arch = utils.OsInfo()                
@@ -52,17 +52,20 @@ func main() {
 
 		for c := 0; c < opts.Concurrency; c++ {
 			jobs.Add(1)
-			go github.DownloadRelease(stdInUrls, &jobs, token, tempdir, noextract)
+			go github.DownloadRelease(stdInUrls, &jobs, token, tempdir, skipextraction)
 		}
 	}
 
 	jobs.Wait()
 
 	switch {
+	case opts.Version:
+		fmt.Println("getghrel version: 0.0.1")
+		
 	case opts.List:
 		return
 
-	case noextract:
+	case skipextraction:
 		fmt.Println("Archives are inside: ", tempdir)
 
 	default:
