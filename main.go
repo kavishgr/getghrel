@@ -60,7 +60,7 @@ func main() {
 
 	switch {
 	case opts.Version:
-		fmt.Println("getghrel version: 0.0.1")
+		fmt.Println("getghrel version: 0.1.0")
 		
 	case opts.List:
 		return
