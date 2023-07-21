@@ -8,6 +8,8 @@ You can also choose to skip the extraction and keep the archive itself if the re
 
 Download the latest binary from the [releases](https://github.com/kavishgr/getghrel/releases) section and place it in your `$PATH`. 
 
+https://github.com/kavishgr/getghrel/releases
+
 ### Dependencies
 
 - A GitHub token. By default, the tool will look for the `GITHUB_TOKEN` environment variable. Alternatively, you can also provide one directly on the command line.
@@ -49,7 +51,8 @@ To list the found releases, create a text file with a **complete URL** or **owne
 
 ```sh
 # List of URLs
-# e.g 
+# e.g "sharkdp/bat" or https://github.com/sharkdp/bat
+
 cat urls.txt | getghrel -list -con 3 | tee releases.txt
 
 # Single one
@@ -75,7 +78,7 @@ In case a repository lacks a latest release tag, the tool will search for the mo
 
 ### Download Found Assets
 
-To download the found assets and keep the binaries in a temporary folder (which is `/tmp/getghrel` by default), simply use the '-download' flag:
+To download the found assets and keep the binaries in a temporary folder (which is `/tmp/getghrel` by default), simply use the `-download` flag:
 
 ```sh
 # List of URLS found with -list
@@ -86,12 +89,14 @@ cat releases.txt | getghrel -download -con 3
 echo "https://github.com/sharkdp/bat" | getghrel -list | getghrel -download
 ```
 
+Before using `-download`, remove any lines starting with 'N/A' from the list of found assets, like shown below.
+
 #### Demo Screenshot
 
 ![-download](examples/download-flag.jpg)
 
 
-In the example above, you can observe that the bottom package had two releases due to different versions of GNU. However, the tool only retained one version. You can filter out these additional releases. I included them here for the purpose of this example.
+In the example above, you can observe that the `ClementTsang/bottom` package had two releases due to different versions of GNU. However, the tool only retained one version. You can filter out these additional releases. I included them here for the purpose of this example.
 
 To download to a different location, use the `-tempdir` flag :
 
@@ -123,7 +128,7 @@ It is useful for releases that require dependencies bundled together in separate
 
 - Add an option to include appimages.
 
-- **Optional**: update the regular expression to include releases that contain only the operating system and not the architecture. Most releases do include both the OS and architecture, I'm mentioning it here because of the neovim issue discussed earlier.
+- **Optional**: update the regex or add some sort of backup/rescue regex to include releases that contain only the operating system and not the architecture. Most releases do include both the OS and architecture, I'm mentioning it here because of the neovim issue discussed earlier.
 
 ## Contributing
 
