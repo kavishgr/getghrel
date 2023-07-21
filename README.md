@@ -8,8 +8,6 @@ You can also choose to skip the extraction and keep the archive itself if the re
 
 Download the latest binary from the [releases](https://github.com/kavishgr/getghrel/releases) section and place it in your `$PATH`. 
 
-https://github.com/kavishgr/getghrel/releases
-
 ### Dependencies
 
 - A GitHub token. By default, the tool will look for the `GITHUB_TOKEN` environment variable. Alternatively, you can also provide one directly on the command line.
