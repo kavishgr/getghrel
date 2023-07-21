@@ -262,7 +262,7 @@ func FetchGithubReleaseUrl(urlsChan chan string, job *sync.WaitGroup, regex, ght
 		// if the message is "Not Found"
 		// release/asset section is EMPTY or is using tags instead of latest release
 		if message.Str == "Not Found" {
-			// fmt.Printf("NOT FOUND: %s\n", u)
+			// fetch assets for most recent tag
 			body = getTagByName(ghtoken, ownerNrepo)
 		}
 
