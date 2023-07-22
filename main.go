@@ -12,14 +12,14 @@ import (
 func main() {
 
 	var (
-		opts      = options.ParseFlags()
+		opts           = options.ParseFlags()
 		skipextraction = opts.SkipExtraction
-		token     = opts.GHToken
-		tempdir   = opts.TempDir
-		ost, arch = utils.OsInfo()                
-		regex     = utils.SetRegex(ost, arch)
-		stdInUrls = make(chan string)             
-		jobs      sync.WaitGroup
+		token          = opts.GHToken
+		tempdir        = opts.TempDir
+		ost, arch      = utils.OsInfo()
+		regex          = utils.SetRegex(ost, arch)
+		stdInUrls      = make(chan string)
+		jobs           sync.WaitGroup
 	)
 
 	if token == "" {
@@ -31,7 +31,7 @@ func main() {
 		os.Exit(1)
 	}
 
-	go utils.ScanStdIn(stdInUrls) 
+	go utils.ScanStdIn(stdInUrls)
 
 	if opts.List {
 		for c := 0; c < opts.Concurrency; c++ {
@@ -61,7 +61,7 @@ func main() {
 	switch {
 	case opts.Version:
 		fmt.Println("getghrel version: 0.1.0")
-		
+
 	case opts.List:
 		return
 

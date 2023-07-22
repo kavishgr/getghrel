@@ -2,9 +2,10 @@ package utils
 
 import (
 	"bufio"
-	// "log"
 	"os"
 )
+
+// scan StdIn and send each line to the apiUrl channel
 
 func ScanStdIn(apiUrl chan string) {
 	scanner := bufio.NewScanner(os.Stdin)
