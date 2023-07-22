@@ -12,12 +12,12 @@ func SetRegex(ost, arch string) string{
 	switch {
 	// darwin amd64
 	case (ost == "darwin" && arch == "amd64"):
-		regex = `(?i)(?=.*(?:apple|darwin|macos|mac))(?=.*(?:amd64|x86_64))(?!.*(?:freebsd|netbsd|openbsd|linux|windows|win64|.sha256sum|.sha256|.sbom|checksums|.txt))(?:.*(?:apple|darwin|macos|mac).*?(?:amd64|x86_64)|(?:amd64|x86_64).*?(?:apple|darwin|macos|mac))(?:[^a-z]|$)`
+		regex = `(?i)(?=.*(?:apple|darwin|macos|mac))(?=.*(?:amd64|x86_64|x64))(?!.*(?:freebsd|netbsd|openbsd|linux|windows|win64|.sha256sum|.sha256|.sbom|checksums|.txt))(?:.*(?:apple|darwin|macos|mac).*?(?:amd64|x86_64|x64)|(?:amd64|x86_64|x64).*?(?:apple|darwin|macos|mac))(?:[^a-z]|$)`
 
 	// linux amd64
 	case (ost == "linux" && arch == "amd64"):
 		//good
-		regex = `(?i)(?=.*(?:linux))(?=.*(?:amd64|x86_64))(?!.*(?:freebsd|netbsd|openbsd|windows|win64|apple|darwin|macos|mac|.sha256sum|.sha256|.sbom|checksums|.txt|.rpm|.deb))(?:.*(?:linux).*?(?:amd64|x86_64)|(?:amd64|x86_64).*?(?:linux))(?:[^a-z]|$)`
+		regex = `(?i)(?=.*(?:linux))(?=.*(?:amd64|x86_64|x64))(?!.*(?:freebsd|netbsd|openbsd|windows|win64|apple|darwin|macos|mac|.sha256sum|.sha256|.sbom|checksums|.txt|.rpm|.deb))(?:.*(?:linux).*?(?:amd64|x86_64|x64)|(?:amd64|x86_64|x64).*?(?:linux))(?:[^a-z]|$)`
 	
 	// darwin arm64 
 	case (ost == "darwin" && arch == "arm64"):
