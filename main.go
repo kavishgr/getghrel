@@ -20,6 +20,7 @@ func main() {
 		regex          = utils.SetRegex(ost, arch)
 		stdInUrls      = make(chan string)
 		jobs           sync.WaitGroup
+		version 	   = "0.1.0"
 	)
 
 	if token == "" {
@@ -28,6 +29,12 @@ func main() {
 		fmt.Println("")
 		fmt.Println("Run 'getghrel -h'")
 		fmt.Println("Or browse to: 'https://github.com/kavishgr/getghrel'")
+		os.Exit(1)
+	}
+
+	if len(os.Args) == 1 {
+		fmt.Println("No arguments were provided.")
+		fmt.Println("Run: 'getghrel -h'")
 		os.Exit(1)
 	}
 
@@ -60,7 +67,7 @@ func main() {
 
 	switch {
 	case opts.Version:
-		fmt.Println("getghrel version: 0.1.0")
+		fmt.Println("getghrel version: ", version)
 
 	case opts.List:
 		return
