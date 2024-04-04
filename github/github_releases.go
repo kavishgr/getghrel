@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"github.com/dlclark/regexp2"
+	"github.com/k0kubun/go-ansi"
 	"github.com/kavishgr/getghrel/utils"
 	"github.com/schollz/progressbar/v3"
 	"github.com/shurcooL/githubv4"
@@ -22,8 +23,8 @@ import (
 )
 
 /*
-	- Check if a given string is a valid URL
-	got the regex from chatgpt
+- Check if a given string is a valid URL
+got the regex from chatgpt
 */
 func isValidURL(url string) bool {
 	urlRegex := regexp.MustCompile(`^(https?|ftp)://[^\s/$.?#].[^\s]*$`)
@@ -31,27 +32,27 @@ func isValidURL(url string) bool {
 }
 
 /*
- 	Takes a GitHub URL as input and returns two strings. 
- 	It aims to standardize the URL format 
- 	to match the API endpoint for fetching the latest release 
- 	of a GitHub repository.
+	 	Takes a GitHub URL as input and returns two strings.
+	 	It aims to standardize the URL format
+	 	to match the API endpoint for fetching the latest release
+	 	of a GitHub repository.
 
-	- It initializes apiDomain and apiDomainSuffix variables with fixed parts 
-	of the API URL.
+		- It initializes apiDomain and apiDomainSuffix variables with fixed parts
+		of the API URL.
 
-	- It parses the input githubUrl using the url.Parse function 
-	to extract path information.
+		- It parses the input githubUrl using the url.Parse function
+		to extract path information.
 
-	- If the input URL is valid (using the isValidURL function), 
-	it constructs the API URL by combining apiDomain, the parsed path, 
-	and apiDomainSuffix.
+		- If the input URL is valid (using the isValidURL function),
+		it constructs the API URL by combining apiDomain, the parsed path,
+		and apiDomainSuffix.
 
-	- If the input URL is not valid, 
-	it assumes the input is a GitHub repository name 
-	and constructs the API URL accordingly.
+		- If the input URL is not valid,
+		it assumes the input is a GitHub repository name
+		and constructs the API URL accordingly.
 
-	- It then returns the standardized API URL 
-	and the extracted repository path.
+		- It then returns the standardized API URL
+		and the extracted repository path.
 */
 func fixUrl(githubUrl string) (string, string) {
 	apiDomain := "https://api.github.com/repos"
@@ -69,9 +70,9 @@ func fixUrl(githubUrl string) (string, string) {
 }
 
 /*
-	- Creates an authenticated HTTP GET request for the GitHub API 
-	by setting the required headers, 
-	including the GitHub token and user agent
+- Creates an authenticated HTTP GET request for the GitHub API
+by setting the required headers,
+including the GitHub token and user agent
 */
 func craftGithubReq(ghtoken, url string) *http.Request {
 	req, err := http.NewRequest("GET", url, nil)
@@ -84,12 +85,13 @@ func craftGithubReq(ghtoken, url string) *http.Request {
 	return req
 }
 
-/* 	- Downloads and processes files 
-	concurrently from a list of URLs provided through the urlsChan.
+/*
+  - Downloads and processes files
+    concurrently from a list of URLs provided through the urlsChan.
 
-	- It uses a GitHub token for authentication
-	saves the downloaded files to a temporary directory
-	and optionally extracts the files if specified. 
+  - It uses a GitHub token for authentication
+    saves the downloaded files to a temporary directory
+    and optionally extracts the files if specified.
 */
 func DownloadRelease(urlsChan chan string, job *sync.WaitGroup, ghtoken, tempdir string, skipextraction bool) {
 
@@ -114,17 +116,40 @@ func DownloadRelease(urlsChan chan string, job *sync.WaitGroup, ghtoken, tempdir
 		f, _ := os.OpenFile(src, os.O_CREATE|os.O_WRONLY, 0644)
 		defer f.Close()
 
-		bar := progressbar.DefaultBytes(
-			resp.ContentLength,
-			file,
-		)
+		// bar := progressbar.DefaultBytes(
+		// 	resp.ContentLength,
+		// 	file,
+		// )
+
+		// io.Copy(io.MultiWriter(f, bar), resp.Body)
+
+		bar := progressbar.NewOptions64(resp.ContentLength,
+			progressbar.OptionSetWriter(ansi.NewAnsiStdout()),
+			progressbar.OptionEnableColorCodes(true),
+			progressbar.OptionClearOnFinish(),
+			progressbar.OptionSetElapsedTime(false),
+			progressbar.OptionShowBytes(true),
+			progressbar.OptionSetWidth(15),
+			progressbar.OptionSetDescription(fmt.Sprintf("%s", file)),
+			progressbar.OptionSetTheme(progressbar.Theme{
+				Saucer:        "[green]=[reset]",
+				SaucerHead:    "[green]>[reset]",
+				SaucerPadding: " ",
+				BarStart:      "[",
+				BarEnd:        "]",
+			}))
 
 		io.Copy(io.MultiWriter(f, bar), resp.Body)
-		
+		bar.Reset()
+		bar.Finish()
+
 		if skipextraction {
+			fmt.Printf("Downloaded: %s\n", file)
 			return
 		}
 
+		fmt.Printf("Downloaded and Extracted: %s\n", file)
+		bar.Close()
 		utils.Extractor(src, tempdir)
 	}
 
@@ -133,18 +158,19 @@ func DownloadRelease(urlsChan chan string, job *sync.WaitGroup, ghtoken, tempdir
 		downloadAndProcessFile(u)
 	}
 }
+
 /*
-	- Takes a string in the format "owner/repo" as input 
-	and returns two strings.
+- Takes a string in the format "owner/repo" as input
+and returns two strings.
 
-	- It extracts the owner and repository names 
-	from the input string by splitting it at the '/' character.
+- It extracts the owner and repository names
+from the input string by splitting it at the '/' character.
 
-	- If the input starts with a '/', 
-	it removes it before performing the split. 
+- If the input starts with a '/',
+it removes it before performing the split.
 
-	- The function then returns the extracted owner 
-	and repository names as separate strings.
+- The function then returns the extracted owner
+and repository names as separate strings.
 */
 func split(ownerNrepo string) (string, string) {
 	var str string
@@ -156,35 +182,35 @@ func split(ownerNrepo string) (string, string) {
 }
 
 /*
-	- Retrieves information about a GitHub repository's latest release tag 
-	using the GitHub GraphQL API. 
-	It takes a GitHub API token (`ghtoken`) 
-	and a string in the format "owner/repo" (`ownerNrepo`) 
-	representing the repository's owner and name.
+- Retrieves information about a GitHub repository's latest release tag
+using the GitHub GraphQL API.
+It takes a GitHub API token (`ghtoken`)
+and a string in the format "owner/repo" (`ownerNrepo`)
+representing the repository's owner and name.
 
-	- The function uses the `split` function to separate 
-	the owner and repository names from the input string. 
-	It then sets up an OAuth2 token source 
-	and an HTTP client to create a GitHub GraphQL client.
+- The function uses the `split` function to separate
+the owner and repository names from the input string.
+It then sets up an OAuth2 token source
+and an HTTP client to create a GitHub GraphQL client.
 
-	- Next, the function defines a GraphQL query to fetch 
-	the latest release tag for the given repository. 
-	The query specifies the required fields, 
-	such as the name of the tag and sorting based on commit date.
+- Next, the function defines a GraphQL query to fetch
+the latest release tag for the given repository.
+The query specifies the required fields,
+such as the name of the tag and sorting based on commit date.
 
-	- After executing the GraphQL query, 
-	the function extracts the latest tag name 
-	from the query result. 
-	It constructs the URL for the GitHub API 
-	endpoint related to the retrieved tag.
+- After executing the GraphQL query,
+the function extracts the latest tag name
+from the query result.
+It constructs the URL for the GitHub API
+endpoint related to the retrieved tag.
 
-	- Using the `craftGithubReq` function, 
-	it creates an HTTP GET request 
-	with the provided GitHub token and tag URL. 
-	The function then sends the request, 
-	reads the response body, 
-	and returns it as a byte slice containing 
-	the information about the latest release tag.
+- Using the `craftGithubReq` function,
+it creates an HTTP GET request
+with the provided GitHub token and tag URL.
+The function then sends the request,
+reads the response body,
+and returns it as a byte slice containing
+the information about the latest release tag.
 */
 func getTagByName(ghtoken, ownerNrepo string) []byte {
 	// GitHub API token
@@ -245,7 +271,6 @@ func getTagByName(ghtoken, ownerNrepo string) []byte {
 	// fmt.Println(tagUrl)
 	// fmt.Println("TAGURL:", tagUrl)
 
-
 	req := craftGithubReq(ghtoken, tagUrl)
 	client := http.Client{}
 	resp, err := client.Do(req)
@@ -273,39 +298,39 @@ func mapIsEmpty(m map[string]int) bool {
 */
 
 /*
-	- Fetches the download URLs for specific assets from GitHub releases. 
-	It uses a regular expression (regex) to filter URLs 
-	based on the target OS/architecture. 
-	The function takes URLs from the urlsChan channel 
-	and uses a provided GitHub API token (ghtoken) 
-	to make API requests to fetch release information.
+- Fetches the download URLs for specific assets from GitHub releases.
+It uses a regular expression (regex) to filter URLs
+based on the target OS/architecture.
+The function takes URLs from the urlsChan channel
+and uses a provided GitHub API token (ghtoken)
+to make API requests to fetch release information.
 
-	- The function starts by defining an inner function fetch responsible 
-	for handling the URL processing. 
-	Within this function, it prepares the API URL 
-	using fixUrl and constructs an HTTP GET request 
-	with the provided GitHub token using craftGithubReq. 
-	It then sends the request and reads the response body 
-	containing release information.
+- The function starts by defining an inner function fetch responsible
+for handling the URL processing.
+Within this function, it prepares the API URL
+using fixUrl and constructs an HTTP GET request
+with the provided GitHub token using craftGithubReq.
+It then sends the request and reads the response body
+containing release information.
 
-	- The function checks if the response contains a "Not Found" message, 
-	indicating that the repository may be using tags 
-	instead of the latest release. In such cases, 
-	it fetches the assets for the most recent tag 
-	using the getTagByName function.
+- The function checks if the response contains a "Not Found" message,
+indicating that the repository may be using tags
+instead of the latest release. In such cases,
+it fetches the assets for the most recent tag
+using the getTagByName function.
 
-	- Next, the function uses gjson to parse the response body 
-	and extract the URLs of the assets. 
-	It applies the provided regular expression 
-	to filter the URLs based on the target OS/architecture. 
-	URLs that match the regex are stored in the github_release map.
+- Next, the function uses gjson to parse the response body
+and extract the URLs of the assets.
+It applies the provided regular expression
+to filter the URLs based on the target OS/architecture.
+URLs that match the regex are stored in the github_release map.
 
-	- If there are matching URLs, they are printed to the console. 
-	If there are no matching URLs, "N/A" is printed to 
-	indicate that no relevant assets were found.
+- If there are matching URLs, they are printed to the console.
+If there are no matching URLs, "N/A" is printed to
+indicate that no relevant assets were found.
 
-	- The main loop of the function continuously receives URLs 
-	from urlsChan and processes them using the fetch function.
+- The main loop of the function continuously receives URLs
+from urlsChan and processes them using the fetch function.
 */
 func FetchGithubReleaseUrl(urlsChan chan string, job *sync.WaitGroup, regex, ghtoken string) {
 
