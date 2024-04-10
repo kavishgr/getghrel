@@ -6,6 +6,7 @@ require (
 	github.com/dlclark/regexp2 v1.11.0
 	github.com/k0kubun/go-ansi v0.0.0-20180517002512-3bf9e2903213
 	github.com/mholt/archiver/v4 v4.0.0-alpha.8
+	github.com/mitchellh/colorstring v0.0.0-20190213212951-d06e56a500db
 	github.com/schollz/progressbar/v3 v3.14.2
 	github.com/shurcooL/githubv4 v0.0.0-20240120211514-18a1ae0e79dc
 	github.com/tidwall/gjson v1.17.1
@@ -25,7 +26,6 @@ require (
 	github.com/klauspost/compress v1.17.7 // indirect
 	github.com/klauspost/pgzip v1.2.6 // indirect
 	github.com/mattn/go-isatty v0.0.20 // indirect
-	github.com/mitchellh/colorstring v0.0.0-20190213212951-d06e56a500db // indirect
 	github.com/nwaples/rardecode/v2 v2.0.0-beta.2 // indirect
 	github.com/pierrec/lz4/v4 v4.1.21 // indirect
 	github.com/rivo/uniseg v0.4.7 // indirect
