@@ -20,7 +20,7 @@ func main() {
 		regex          = utils.SetRegex(ost, arch)
 		stdInUrls      = make(chan string)
 		jobs           sync.WaitGroup
-		version 	   = "0.1.0"
+		version 	   = "0.1.2"
 	)
 
 	if token == "" {
@@ -63,7 +63,7 @@ func main() {
 		}
 	}
 
-	jobs.Wait()
+	jobs.Wait() // wait for above jobs to finish
 
 	switch {
 	case opts.Version:
