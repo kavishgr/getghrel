@@ -23,6 +23,11 @@ func main() {
 		version 	   = "0.1.2"
 	)
 
+	if opts.Version{
+		fmt.Println("getghrel version: ", version)
+		os.Exit(1)
+	}
+
 	if token == "" {
 		fmt.Println("GITHUB_TOKEN environment variable is not found.")
 		fmt.Println("Nor is -ghtoken provided on the command line.")
@@ -66,8 +71,6 @@ func main() {
 	jobs.Wait() // wait for above jobs to finish
 
 	switch {
-	case opts.Version:
-		fmt.Println("getghrel version: ", version)
 
 	case opts.List:
 		return
