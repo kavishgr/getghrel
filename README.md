@@ -57,7 +57,7 @@ cat urls.txt | getghrel -list -con 3 | tee releases.txt
 echo "sharkdp/bat" | getghrel -list | sort
 ```
 
-#### Demo Screenshot
+#### Demo 
 
 ![-list](examples/list-flag.jpg)
 
@@ -74,6 +74,22 @@ Duplicates are unlikely, but if they do occur, you can easily filter them out us
 
 In case a repository lacks a latest release tag, the tool will search for the most recent release tag instead. In rare cases this can be an unstable/nightly release.
 
+> If all urls is being listed as `N/A`s, maybe your github token has expired:
+
+```
+N/A: https://github.com/neovim/neovim
+N/A: https://github.com/BurntSushi/ripgrep
+N/A: https://github.com/Byron/dua-cli
+N/A: https://github.com/ClementTsang/bottom
+N/A: https://github.com/Macchina-CLI/macchina
+N/A: https://github.com/Elkowar/pipr
+N/A: https://github.com/Orange-OpenSource/hurl
+N/A: https://github.com/PaulJuliusMartinez/jless
+...
+...
+...
+```
+
 ### Download Found Assets
 
 To download the found assets and keep the binaries in a temporary folder (which is `/tmp/getghrel` by default), simply use the `-download` flag:
@@ -89,7 +105,9 @@ echo "https://github.com/sharkdp/bat" | getghrel -list | getghrel -download
 
 Before using `-download`, remove any lines starting with 'N/A' from the list of found assets, like shown below.
 
-#### Demo Screenshot
+> `CTRL+C`(signal interupt) during download, will leave all files in `/tmp/getghrel`. You'll have to remove it manually.
+
+#### Demo 
 
 ![-download](examples/download-flag.jpg)
 
@@ -116,7 +134,7 @@ echo "helix-editor/helix" | getghrel -list | getghrel -skipextraction -download
 
 It is useful for releases that require dependencies bundled together in separate files or folders, rather than just a single binary.
 
-#### Demo Screenshot
+#### Demo 
 
 ![-skipextraction](examples/skipextraction-flag.jpg)
 
