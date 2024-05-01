@@ -127,7 +127,7 @@ func DownloadRelease(urlsChan chan string, job *sync.WaitGroup, ghtoken, tempdir
 			progressbar.OptionSetWriter(ansi.NewAnsiStdout()),
 			progressbar.OptionEnableColorCodes(true),
 			progressbar.OptionClearOnFinish(),
-			progressbar.OptionSetElapsedTime(false),
+			progressbar.OptionSetElapsedTime(true),
 			progressbar.OptionShowBytes(true),
 			progressbar.OptionSetWidth(15),
 			progressbar.OptionSetDescription(fmt.Sprintf("%s", file)),
@@ -145,6 +145,7 @@ func DownloadRelease(urlsChan chan string, job *sync.WaitGroup, ghtoken, tempdir
 
 		if skipextraction {
 			fmt.Printf("Downloaded: %s\n", file)
+			bar.Close()
 			return
 		}
 
