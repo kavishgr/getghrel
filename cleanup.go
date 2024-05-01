@@ -7,6 +7,7 @@ import (
 	"os"
 	"path/filepath"
 	"runtime"
+	"io/fs"
 )
 
 func cleanup(tempdir string) error {
@@ -25,14 +26,18 @@ func cleanup(tempdir string) error {
 		}
 	}
 
-	err := filepath.Walk(tempdir, func(binpath string, info os.FileInfo, err error) error {
+	err := filepath.WalkDir(tempdir, func(binpath string, d fs.DirEntry, err error) error {
 		if err != nil {
 			return err
 		}
 
-		// Check if the file is a regular file
-		if !info.Mode().IsRegular() {
-			// fmt.Println("Not regular: ", binpath)
+		if binpath == tempdir {
+      		return nil
+    	}
+
+		// If a directory - skip
+		if d.IsDir() {
+			// fmt.Println("Not regular: ", binpath) // comment
 			return nil
 		}
 
@@ -40,17 +45,18 @@ func cleanup(tempdir string) error {
 		f, err := os.Open(binpath)
 		defer f.Close()
 		if err != nil {
-			return nil
+			return err
 		}
 
-		// Verify if the open file is either ELF or Mach-O
+		// Verify if the open file is either an ELF or Mach-O
 		if err := verifyFile(f); err == nil {
 			err = os.Chmod(binpath, 0755)
+			// fmt.Println("Binary: ", binpath) //comment
 			if err != nil {
 				return err
 			}
 		} else {
-			// fmt.Println("Removing: ", binpath)
+			// fmt.Println("Removing: ", binpath) // comment
 			os.Remove(binpath)
 		}
 		return nil
