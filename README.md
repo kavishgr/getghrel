@@ -71,6 +71,10 @@ In the case of `N/A`(not available), it means that the repository doesn't have a
 > **Note**: In the example above, the first line shows that the 'neovim' package is unavailable. But neovim does have a latest release. The reason it's not listed is because my regex always checks for assets containing both the OS and architecture, while neovim's assets only specify the OS. There are ways to resolve this issue, but it involves dealing with regex, which can be a bit complex. Nevertheless, you can be confident that every release will be discoverable, except for this particular case.
 
 >> **update**: On macOS, Neovim is now being listed because the release includes the OS and arch. I haven't tried it on Linux yet.
+>> ```➜  ~ echo "neovim/neovim" | getghrel -list
+https://github.com/neovim/neovim/releases/download/v0.10.0/nvim-macos-arm64.tar.gz```
+
+>>>I haven't tried it on Linux yet.
 
 Duplicates are unlikely, but if they do occur, you can easily filter them out using tools like `sort` and `uniq`. That should do the trick.
 
