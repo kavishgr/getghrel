@@ -68,13 +68,15 @@ In rare cases, you may come across additional files like checksums and SBOMs tha
 
 In the case of `N/A`(not available), it means that the repository doesn't have any release assets available. For Linux releases, there might be separate versions for both Gnu and Musl. You can choose to filter them out based on your preferences.
 
-> Note: In the example above, the first line shows that the 'neovim' package is unavailable. But neovim does have a latest release. The reason it's not listed is because my regex always checks for assets containing both the OS and architecture, while neovim's assets only specify the OS. There are ways to resolve this issue, but it involves dealing with regex, which can be a bit complex. Nevertheless, you can be confident that every release will be discoverable, except for this particular case.
+> **Note**: In the example above, the first line shows that the 'neovim' package is unavailable. But neovim does have a latest release. The reason it's not listed is because my regex always checks for assets containing both the OS and architecture, while neovim's assets only specify the OS. There are ways to resolve this issue, but it involves dealing with regex, which can be a bit complex. Nevertheless, you can be confident that every release will be discoverable, except for this particular case.
+
+>> **update**: On macOS, Neovim is now being listed because the release includes the OS and arch. I haven't tried it on Linux yet.
 
 Duplicates are unlikely, but if they do occur, you can easily filter them out using tools like `sort` and `uniq`. That should do the trick.
 
 In case a repository lacks a latest release tag, the tool will search for the most recent release tag instead. In rare cases this can be an unstable/nightly release.
 
-> If all urls is being listed as `N/A`s, maybe your github token has expired:
+> If all urls is being listed as `N/A`, maybe your github token has expired:
 
 ```
 N/A: https://github.com/neovim/neovim
@@ -144,7 +146,7 @@ It is useful for releases that require dependencies bundled together in separate
 
 - Add an option to include appimages.
 
-- **Optional**: update the regex or add some sort of backup/rescue regex to include releases that contain only the operating system and not the architecture. Most releases do include both the OS and architecture, I'm mentioning it here because of the neovim issue discussed earlier.
+- **Optional**: update the regex or add some sort of backup/rescue regex to include releases that contain only the operating system and not the architecture. Most releases do include both the OS and architecture, I'm mentioning it here because of the neovim(solved now) issue discussed earlier.
 
 ## Contributing
 
