@@ -72,7 +72,8 @@ In the case of `N/A`(not available), it means that the repository doesn't have a
 
 >> **update**: On macOS, Neovim is now being listed because the release includes the OS and arch. I haven't tried it on Linux yet.
 
-```➜  ~ echo "neovim/neovim" | getghrel -list
+```
+➜  ~ echo "neovim/neovim" | getghrel -list
 https://github.com/neovim/neovim/releases/download/v0.10.0/nvim-macos-arm64.tar.gz
 ```
 
