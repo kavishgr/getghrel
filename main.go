@@ -2,11 +2,12 @@ package main
 
 import (
 	"fmt"
+	"os"
+	"sync"
+
 	"github.com/kavishgr/getghrel/github"
 	"github.com/kavishgr/getghrel/options"
 	"github.com/kavishgr/getghrel/utils"
-	"os"
-	"sync"
 )
 
 func main() {
@@ -20,10 +21,10 @@ func main() {
 		regex          = utils.SetRegex(ost, arch)
 		stdInUrls      = make(chan string)
 		jobs           sync.WaitGroup
-		version 	   = "0.1.2"
+		version        = "0.1.2"
 	)
 
-	if opts.Version{
+	if opts.Version {
 		fmt.Println("getghrel version: ", version)
 		os.Exit(1)
 	}
