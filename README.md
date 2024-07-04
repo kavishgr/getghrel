@@ -76,9 +76,6 @@ In the case of `N/A`(not available), it means that the repository doesn't have a
 ➜  ~ echo "neovim/neovim" | getghrel -list
 https://github.com/neovim/neovim/releases/download/v0.10.0/nvim-macos-arm64.tar.gz
 ```
-
->>I haven't tried it on Linux yet.
-
 Duplicates are unlikely, but if they do occur, you can easily filter them out using tools like `sort` and `uniq`. That should do the trick.
 
 In case a repository lacks a latest release tag, the tool will search for the most recent release tag instead. In rare cases this can be an unstable/nightly release.
