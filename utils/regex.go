@@ -26,13 +26,6 @@ func SetRegex(ost, arch string) string{
 	// linux arm64 
 	case (ost == "linux" && arch == "aarch64"):
 		regex = `(?i)(?=.*(?:linux))(?=.*(?:arm64|aarch64))(?!.*(?:freebsd|netbsd|openbsd|windows|win64|apple|darwin|macos|mac|.sha256sum|.sha256|.sbom|checksums|.txt|.rpm|.deb))(?:.*(?:linux).*?(?:arm64|aarch64)|(?:arm64|aarch64).*?(?:linux))(?:[^a-z]|$)`
-	
-	// TODO: Appimage regex 
-	// case (ost == "linux" && arch == "amd64" && appimage == true):
-	// 	regex =  something
-
-	// case (ost == "linux" && arch == "aarch64" && appimage == true):
-	// 	regex =  something
 
 	default:
 		msg1 := "OS or Architecture is not supported or not found in the regex pattern"
